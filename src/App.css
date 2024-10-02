@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+/* Global Styles */
+@media (max-width: 768px) {
+  /* Custom styles for screens smaller than 768px */
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  /* Custom styles for screens between 768px and 1024px */
+}
+
+/* src/global.css */
+/* global.css or App.css */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+.min-h-screen {
+  min-height: 100vh;
+}
+
+/* Additional global styles can go here */
+
+/* styles.css */
+.table-body-padding {
+  padding-left: 4rem;
+}
+
+
+/* Hide scrollbar on mobile */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+/* Show scrollbar on desktop */
+@media (min-width: 768px) {
+  .scrollbar-visible::-webkit-scrollbar {
+      display: block;
+  }
+
+  .scrollbar-visible {
+      scrollbar-width: thin;
+  }
+}
