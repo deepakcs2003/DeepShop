@@ -58,7 +58,7 @@ const userSignUp = async (req, res) => {
             email,
             password: hashPassword,
             uploadPic,
-            role:"General"  // Default to "user" if role is not provided
+            role:"general"  // Default to "user" if role is not provided
         });
 
         // Return success response
