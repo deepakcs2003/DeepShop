@@ -1,4 +1,4 @@
-const backendDomain="http://localhost:5000"
+const backendDomain="https://deepshop.onrender.com"
 const summaryApi={
     signUp:{
         url:`${backendDomain}/api/v1/signup`,
