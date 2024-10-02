@@ -14,7 +14,7 @@ app.use(express.json()); // Allows the app to parse JSON data in the request bod
 
 // Enable Cross-Origin Resource Sharing (CORS) for all routes
 app.use(cors({
-  origin:true||process.env.FRONTEND_URL,  // Ensure this matches the frontend URL
+  origin:true,  // Ensure this matches the frontend URL
   credentials: true  // This must be true to allow cookies to be sent
 })); // This middleware allows handling requests from different origins
 
@@ -30,7 +30,7 @@ app.get('/', (req, res) => {
 });
 
 // Define the port on which the server will run
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8000;
 
 // Start the server only after the database connection is established
 dbConnect().then(() => {
