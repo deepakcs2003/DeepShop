@@ -4,8 +4,8 @@ const cors = require('cors'); // Import CORS middleware for handling cross-origi
 const dotenv = require('dotenv'); // Import dotenv for loading environment variables from a .env file
 dotenv.config(); // Load environment variables from .env file into process.env
 const dbConnect = require('./Config/db'); // Import your database connection function
-const routes=require('./Routes/EcommerceRoute')
-const cookieParser = require('cookie-parser')
+const routes = require('./Routes/EcommerceRoute');
+const cookieParser = require('cookie-parser');
 
 const app = express(); // Initialize an Express application
 
@@ -18,14 +18,19 @@ app.use(cors({
   credentials: true  // This must be true to allow cookies to be sent
 })); // This middleware allows handling requests from different origins
 
-// router define
-app.use('/api/v1',routes)
+// Router define
+app.use('/api/v1', routes);
 
-// cookies
-app.use(cookieParser())
+// Cookies middleware
+app.use(cookieParser());
+
+// Define a home page route
+app.get('/', (req, res) => {
+  res.send('Welcome to the E-commerce API Home Page!'); // Send a simple welcome message
+});
 
 // Define the port on which the server will run
-const PORT = process.env.PORT || 5000; 
+const PORT = process.env.PORT || 5000;
 
 // Start the server only after the database connection is established
 dbConnect().then(() => {
