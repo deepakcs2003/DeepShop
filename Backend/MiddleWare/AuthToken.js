@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const authToken = async (req, res, next) => {
   try {
     // Retrieve token from cookies or Authorization header
-    const token = req.cookies?.deepaknediya || req.headers['authorization']?.split(' ')[1];
+    const token = req.cookies?.token || req.headers['authorization']?.split(' ')[1];
     
     // console.log("Token is here: ", token);
 

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { json, Link, useNavigate } from 'react-router-dom';
 import { FaUserCircle, FaEye, FaEyeSlash, FaTrash } from 'react-icons/fa';
-import axios from 'axios'; // Import axios for making API calls
 import summaryApi from '../common';
 import { toast } from 'react-toastify';
 
