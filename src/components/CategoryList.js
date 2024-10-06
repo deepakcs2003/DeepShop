@@ -5,6 +5,12 @@ import { Link } from 'react-router-dom';
 export const CategoryList = ({ onCategorySelect }) => {
     const [productCategory, setProductCategory] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [isMobile, setIsMobile] = useState(false);
+
+    // Function to detect if the user is on a mobile device
+    const checkIsMobile = () => {
+        setIsMobile(window.innerWidth <= 768); // Set your mobile breakpoint here
+    };
 
     const fetchCategoryData = async () => {
         try {
@@ -24,13 +30,20 @@ export const CategoryList = ({ onCategorySelect }) => {
 
     useEffect(() => {
         fetchCategoryData();
+        checkIsMobile(); // Check on initial render
+
+        // Add an event listener to detect screen size changes
+        window.addEventListener('resize', checkIsMobile);
+        return () => {
+            window.removeEventListener('resize', checkIsMobile);
+        };
     }, []);
 
     return (
         <div className="container mx-auto pt-4">
             {loading ? (
                 <div className="flex space-x-4 overflow-x-auto p-4 hide-scrollbar md:scrollbar-visible">
-                    {[...Array(10)].map((_, index) => (
+                    {[...Array(isMobile ? 4 : 10)].map((_, index) => (
                         <SkeletonCard key={index} />
                     ))}
                 </div>
@@ -72,8 +85,10 @@ export const CategoryList = ({ onCategorySelect }) => {
 
 // SkeletonCard Component Definition
 const SkeletonCard = () => (
-    <div className="bg-gradient-to-r from-gray-200 to-gray-300 shadow-xl rounded-lg p-2 flex flex-col items-center cursor-pointer"
-         style={{ width: '130px', height: '120px' }}>
+    <div
+        className="bg-gradient-to-r from-gray-200 to-gray-300 shadow-xl rounded-lg p-2 flex flex-col items-center cursor-pointer"
+        style={{ width: '130px', height: '120px' }}
+    >
         <div className="bg-gray-300 animate-pulse rounded-2xl p-1 flex items-center justify-center w-full h-20">
             <div className="w-full h-full bg-gray-400 rounded-lg"></div>
         </div>
