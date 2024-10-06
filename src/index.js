@@ -1,19 +1,30 @@
-import React from 'react';
+import React, { StrictMode } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import { RouterProvider } from 'react-router-dom';
 import router from './routes';
-import { store } from './store/store'
-import { Provider } from 'react-redux'
+import { store } from './store/store'; // Adjust this path based on your project structure
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
+import { persistStore } from 'redux-persist'; // Correct import for persistStore
+import App from './App';
+import { Atom } from 'react-loading-indicators';
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
+const persistor = persistStore(store); // Create the persistor
+
 root.render(
-     <Provider store={store}>
-       <RouterProvider router={router}></RouterProvider>
-     </Provider>
+  // <StrictMode></StrictMode>
+  <Provider store={store}>
+    <PersistGate loading={
+      <div className='flex justify-center items-center h-screen'>
+              <Atom color="#8631f5" size="medium" text="" textColor="" />
+      </div>
+      } persistor={persistor}>
+      <RouterProvider router={router} />
+    </PersistGate>
+  </Provider>
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();

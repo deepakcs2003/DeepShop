@@ -5,10 +5,10 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import summaryApi from '../common';
-import { ThreeDot } from 'react-loading-indicators';
 import { Link } from 'react-router-dom';
 import {AddToCart} from "../helper/AddToCart";
 import Context from '../context';
+import { SkeletonCard } from '../helper/Skeleton';
 
 // Custom arrow components for previous and next navigation
 const NextArrow = ({ onClick }) => (
@@ -139,9 +139,12 @@ export const HorizontalCardProduct = ({ category }) => {
     <div className="relative w-full px-4 py-10">
       <h1 className="px-5 font-bold text-blue-600 text-2xl">Popular's {category}</h1>
       {loading ? (
-        <p className="text-center">
-          <ThreeDot variant="bounce" color="#32cd32" size="medium" />
-        </p>
+         <div className="skeleton-container">
+         {/* Render 4 skeleton cards while loading */}
+         {[...Array(4)].map((_, index) => (
+           <SkeletonCard key={index} />
+         ))}
+       </div>       
       ) : (
         <Slider {...settings}>
           {data.map((product) => (

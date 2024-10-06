@@ -109,13 +109,13 @@ const Header = () => {
               {isProfileOpen && (
                 <div
                   ref={dropdownRef}
-                  className="absolute right-0 top-14 w-64 bg-white border border-gray-300 shadow-lg rounded-lg z-10 mt-2"
+                  className="absolute top-14 w-64 bg-white border border-gray-300 shadow-lg rounded-lg z-10"
                 >
                   <div className="p-4">
                     <p className="text-gray-800 font-medium text-lg">Welcome back, {user.name}</p>
                     <p className="text-gray-600 text-sm">{user.email}</p>
                   </div>
-                  <div className="p-4 border-t border-gray-200 hidden md:block">
+                  <div className="p-4 border-t border-gray-200  md:block">
                     <Link to="/admin-panel/all-products">
                       <p className="text-gray-700 hover:text-gray-900">Admin Panel</p>
                     </Link>

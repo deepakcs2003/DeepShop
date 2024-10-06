@@ -10,6 +10,7 @@ import { AllProducts } from "../pages/AllProducts";
 import { CategoryProduct } from "../pages/CategoryProduct";
 import { ProductDetails } from "../pages/ProductDetails";
 import { Cart } from "../pages/Cart";
+import { CheckOut } from "../pages/CheckOut";
 const router=createBrowserRouter(
 
      [
@@ -58,9 +59,15 @@ const router=createBrowserRouter(
                 },
                 {
                     path:"cart",
-                    element:<Cart></Cart>
+                    element:<Cart></Cart>,
+                    children:[
+                       
+                    ]
+                },
+                {
+                    path:"check-out",
+                    element:<CheckOut></CheckOut>
                 }
-                
             ]
         },
        

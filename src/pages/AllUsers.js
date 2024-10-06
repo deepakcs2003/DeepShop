@@ -46,14 +46,13 @@ export const AllUsers = () => {
   };
 
   return (
-    <div className="hidden lg:block p-4 bg-gray-50">
+    <div className="p-4 bg-gray-50">
       <header className="bg-blue-600 text-white p-4 mb-6 rounded-md shadow-md text-center">
         <h1 className="text-xl font-bold">All Users</h1>
       </header>
 
-      {/* User List */}
-      <div className="overflow-x-auto">
-        <table className="w-full min-w-[600px] bg-white border border-gray-300 rounded-lg shadow-md">
+      <div className="overflow-x-auto lg:overflow-hidden">
+        <table className="min-w-full bg-white border border-gray-300 rounded-lg shadow-md">
           <thead>
             <tr className="bg-gray-200 text-gray-600 text-xs md:text-sm">
               <th className="py-2 px-4 border-b">Sr. No.</th>
@@ -64,25 +63,23 @@ export const AllUsers = () => {
               <th className="py-2 px-4 border-b">Action</th>
             </tr>
           </thead>
-          <tbody className="text-sm table-body-padding pl-10">
+          <tbody className="text-sm">
             {allUsers.slice(0, visibleUsers).map((user, index) => (
-              <tr key={user._id || user.id} className="text-gray-700">
-                {/* Log the user object to check structure */}
-                {console.log("User Object:", user)}
-                <td className="py-2 px-12 border-b">{index + 1}</td>
-                <td className="py-2 px-12 border-b">{user.name}</td>
-                <td className="py-2 px-12 border-b">{user.email}</td>
-                <td className="py-2 px-12 border-b">{user.role}</td>
-                <td className="py-2 px-12 border-b">{new Date(user.createdAt).toLocaleDateString()}</td>
-                <td className="py-2 px-12 border-b">
+              <tr key={user._id || user.id} className="text-gray-700 hover:bg-gray-100">
+                <td className="py-2 px-4 border-b" data-label="Sr. No.">{index + 1}</td>
+                <td className="py-2 px-4 border-b" data-label="Name">{user.name}</td>
+                <td className="py-2 px-4 border-b" data-label="Email">{user.email}</td>
+                <td className="py-2 px-4 border-b" data-label="Role">{user.role}</td>
+                <td className="py-2 px-4 border-b" data-label="Created At">{new Date(user.createdAt).toLocaleDateString()}</td>
+                <td className="py-2 px-4 border-b text-center">
                   <button
-                    className='bg-green-100 p-2 rounded-full cursor-pointer hover:bg-green-500 hover:text-white'
+                    className='bg-green-100 p-2 rounded-full cursor-pointer hover:bg-green-500 hover:text-white transition-colors'
                     onClick={() => {
                       setUserUpdateData({
                         name: user.name,
                         email: user.email,
                         role: user.role,
-                        _id: user._id || user.id // Use either _id or id depending on what is available
+                        _id: user._id || user.id
                       });
                       setOpenUpdateRole(true);
                     }}
@@ -93,9 +90,9 @@ export const AllUsers = () => {
               </tr>
             ))}
           </tbody>
+          
         </table>
 
-        {/* Render ChangeUserRole component when the modal is open */}
         {openUpdateRole && (
           <ChangeUserRole
             onClose={() => setOpenUpdateRole(false)}
@@ -103,13 +100,11 @@ export const AllUsers = () => {
             email={userUpdatedData.email}
             role={userUpdatedData.role}
             userId={userUpdatedData._id}
-             // Correctly pass _id (user's ID)
-             callFun={fetchUserData}
+            callFun={fetchUserData}
           />
         )}
       </div>
 
-      {/* Load More button */}
       {visibleUsers < allUsers.length && (
         <div className="flex justify-center mt-6">
           <button
@@ -120,6 +115,66 @@ export const AllUsers = () => {
           </button>
         </div>
       )}
+      <style jsx>{`
+  /* Styling for large screens */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  th, td {
+    text-align: left;
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+  }
+
+  thead th {
+    background-color: #f3f4f6;
+    color: #333;
+    padding: 12px;
+    font-weight: bold;
+  }
+
+  /* Styling for mobile view (max-width: 768px) */
+  @media (max-width: 768px) {
+    table, thead, tbody, th, td, tr {
+      display: block;
+      width: 100%;
+    }
+
+    thead {
+      display: none; /* Hide the table headers */
+    }
+
+    tr {
+      margin-bottom: 16px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    td {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px;
+      text-align: left;
+      position: relative;
+      border: none;
+      border-bottom: 1px solid #ddd;
+    }
+
+    td::before {
+      content: attr(data-label); /* Show the label before each data */
+      flex-basis: 30%; /* Adjust this for label width */
+      font-weight: bold;
+      color: #6b7280;
+    }
+
+    td:last-child {
+      text-align: center;
+      border-bottom: none;
+    }
+  }
+`}</style>
+
     </div>
+    
   );
 };

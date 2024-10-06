@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import {jwtDecode} from 'jwt-decode'; // Correct import for jwt-decode
 import { UploadProduct } from '../components/UploadProduct';
 import summaryApi from '../common';
 import { AdminProductCard } from '../components/AdminProductCard';
@@ -7,7 +6,6 @@ import { AdminProductCard } from '../components/AdminProductCard';
 export const AllProducts = () => {
   const [uploadNewProduct, setUploadNewProduct] = useState(false);
   const [allProducts, setAllProducts] = useState([]);
-  const [isAdmin, setIsAdmin] = useState(false);
 
   const fetchAllProducts = async () => {
     try {
@@ -26,7 +24,7 @@ export const AllProducts = () => {
   }, []);
 
   return (
-    <div className="p-6">
+    <div className="p-6 overflow-hidden">
         <div className="mb-4 flex justify-between mx-9 items-center">
           <h2 className="text-2xl font-bold text-gray-800">All Products</h2>
           <button
@@ -43,8 +41,6 @@ export const AllProducts = () => {
           fetchAllProducts();
         }} fetchAllProducts={fetchAllProducts}/>
       )}
-
-      {/* Show product list for both admins and non-admins */}
       <AdminProductCard allProducts={allProducts} fetchAllProducts={fetchAllProducts}/>
     </div>
   );

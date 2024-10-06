@@ -1,64 +1,59 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
+import { FaUsers, FaBox } from 'react-icons/fa';
 import ROLE from '../common/role';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const AdminPanel = () => {
   const user = useSelector((state) => state?.user?.user);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     if (user?.role !== ROLE.ADMIN) {
       navigate("/");
     }
-  }, [user]);
-
-  const toggleSidebar = () => {
-    setSidebarOpen(!sidebarOpen);
-  };
+  }, [user, navigate]);
 
   return (
-    <div className="flex min-h-screen bg-gray-100">
-      {/* Sidebar for Desktop and Mobile */}
-      <aside
-        className={`lg:w-64 bg-gray-800 text-white p-6 lg:relative lg:pt-16 fixed lg:static z-30 lg:block transition-transform duration-300 ease-in-out ${
-          sidebarOpen ? 'translate-x-0' : '-translate-x-full'
-        } lg:translate-x-0`}
-      >
-        <div className="text-center mb-6">
-          {/* Sidebar User Info */}
-          {user?.uploadPic ? (
-            <img
-              src={user.uploadPic}
-              alt="User Avatar"
-              className="h-20 w-20 rounded-full mx-auto object-cover"
-            />
-          ) : (
-            <div className="h-16 w-16 flex items-center justify-center bg-blue-500 text-white rounded-full mx-auto text-xl">
-              {user?.name?.charAt(0).toUpperCase()}
-            </div>
-          )}
-          <p className="mt-4 text-sm text-gray-400">Role: {user?.role}</p>
-        </div>
-
-        {/* Sidebar Navigation Links */}
-        <nav className="space-y-4 flex flex-col">
-          <Link to="all-users" className="block text-gray-200 hover:bg-gray-700 px-4 py-2 rounded">
-            All Users
-          </Link>
-          <Link to="all-products" className="block text-gray-200 hover:bg-gray-700 px-4 py-2 rounded">
-            All Products
-          </Link>
-        </nav>
-      </aside>
-
+    <div className="flex min-h-screen bg-gray-100 overflow-hidden">
       {/* Main Content */}
-      <div className="flex-1 p-6 bg-gray-100">
-        <main>
+      <div className="flex-1 pt-4 bg-gray-100">
+        {/* Header for Desktop and Mobile */}
+        <header className="bg-gray-800 text-white p-4 flex items-center justify-between fixed w-full z-30">
+          <div className="flex items-center">
+            {user?.uploadPic ? (
+              <img
+                src={user.uploadPic}
+                alt="User Avatar"
+                className="h-10 w-10 rounded-full object-cover mr-4"
+              />
+            ) : (
+              <div className="h-10 w-10 flex items-center justify-center bg-blue-500 text-white rounded-full text-xl mr-4">
+                {user?.name?.charAt(0).toUpperCase()}
+              </div>
+            )}
+            <p className="text-sm">{user?.name}</p>
+          </div>
+
+          {/* Navigation Links */}
+          <nav className="flex space-x-6">
+            <Link to="all-users" className="flex items-center text-gray-200 hover:bg-gray-700 px-2 py-2 rounded">
+              <FaUsers className="mr-2" /> All Users
+            </Link>
+            <Link to="all-products" className="flex items-center text-gray-200 hover:bg-gray-700 px-2 py-2 rounded">
+              <FaBox className="mr-2" /> All Products
+            </Link>
+          </nav>
+        </header>
+
+        {/* Outlet for rendering nested routes */}
+        <main className="mt-16">
           <Outlet />
         </main>
       </div>
+
     </div>
   );
 };

@@ -45,7 +45,7 @@ const userSignIn = async (req, res) => {
             id: user._id,
             role: user.role // Include the role in the payload
         };
-        const token = jwt.sign(payload, process.env.JWT_TOKEN, { expiresIn: "1h" });
+        const token = jwt.sign(payload, process.env.JWT_TOKEN, { expiresIn: "1D" });
 
         // Set the token as a cookie and respond with success
         res.cookie("token", token, { httpOnly: true, secure: process.env.NODE_ENV === 'production' }).status(200).json({

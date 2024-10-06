@@ -4,16 +4,20 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import summaryApi from '../common';
 import AddToCart from '../helper/AddToCart';
-import { Link } from 'react-router-dom';
+import { Link, Outlet, useNavigate } from 'react-router-dom';
 import Context from '../context';
+import { useDispatch, useSelector } from 'react-redux';
+import { addToCart } from '../store/cartSlice';
 
 export const Cart = () => {
   const [items, setItems] = useState([]);
   const [subtotal, setSubtotal] = useState(0);
   const shippingCost = 0.00;
   const token = localStorage.getItem('token');
-  const {fetchAddToCartCount,cartProductCount} =useContext(Context);
-
+  const { fetchAddToCartCount, cartProductCount } = useContext(Context);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const iditem = useSelector((state) => state.cart.deleteItem);
 
   useEffect(() => {
     fetchCartItems();
@@ -30,20 +34,12 @@ export const Cart = () => {
         credentials: "include",
       });
       const data = await response.json();
-      
+
       // Avoid duplicates
       const cartItems = data?.cartItems || [];
       setItems(cartItems);
-      
-      // Calculate subtotal and total quantity
       const newSubtotal = calculateSubtotal(cartItems);
-
-      // Update subtotal
       setSubtotal(newSubtotal);
-      
-      // Dispatch Redux actions once
-      
-
     } catch (err) {
       toast.error('Error fetching cart items');
     }
@@ -55,13 +51,13 @@ export const Cart = () => {
 
   const increaseQuantity = async (item) => {
     await AddToCart(item.productId, 1);
-    fetchAddToCartCount()
+    fetchAddToCartCount();
   };
 
   const decreaseQuantity = async (item) => {
     if (item.quantity > 1) {
       await AddToCart(item.productId, -1);
-      fetchAddToCartCount()
+      fetchAddToCartCount();
     } else {
       deleteItem(item.productId);
     }
@@ -80,11 +76,15 @@ export const Cart = () => {
     } catch (err) {
       toast.error('Error removing item from cart');
     }
-    fetchAddToCartCount()
+    fetchAddToCartCount();
   };
 
   const totalItems = items.length;
   const totalPrice = subtotal + shippingCost;
+  dispatch(addToCart(items));
+  const navigateHandle = () => {
+    navigate("/check-out");
+  };
 
   return (
     <div className="flex flex-col items-center py-8 px-4 md:px-0 bg-gray-50 min-h-screen">
@@ -94,7 +94,12 @@ export const Cart = () => {
             <h2 className="text-3xl font-bold mb-6 text-gray-900">Shopping Cart</h2>
             {items.map((item) => (
               <div key={item.productId} className="flex gap-4 flex-col md:flex-row justify-between items-center py-4 border-b border-gray-200">
-                <img src={item.images[0].url} alt={item.name} className="w-24 h-24 object-contain rounded-md mb-4 md:mb-0" />
+                {/* Check if item.images exists and has at least one image */}
+                <img 
+                  src={item?.images?.[0]?.url || '/default-image.jpg'} 
+                  alt={item.name} 
+                  className="w-24 h-24 object-contain rounded-md mb-4 md:mb-0" 
+                />
                 <div className="flex-1 text-center md:text-left pl-4">
                   <p className="text-sm text-gray-500">Category: {item.category}</p>
                   <h3 className="text-lg font-semibold text-gray-800">{item.productName}</h3>
@@ -142,7 +147,7 @@ export const Cart = () => {
               <p className="text-lg font-semibold text-gray-800">Total Price</p>
               <p className="text-lg font-semibold text-gray-800">₹{totalPrice.toFixed(2)}</p>
             </div>
-            <button className="w-full bg-green-600 text-white p-4 rounded-lg mt-6 hover:bg-coral-700 transition duration-200">
+            <button className="w-full bg-green-600 text-white p-4 rounded-lg mt-6 hover:bg-coral-700 transition duration-200" onClick={navigateHandle}>
               Proceed to Checkout
             </button>
           </div>

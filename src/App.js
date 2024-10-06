@@ -8,6 +8,7 @@ import summaryApi from './common';
 import Context from './context';
 import { useDispatch } from 'react-redux';
 import { setUserDetails } from './store/userSlice';
+
 import './App.css';
 function App() {
   const [cartProductCount,setCartProductCount]=useState(0)
@@ -60,7 +61,7 @@ function App() {
     <Context.Provider value={{ userdetails,cartProductCount,fetchAddToCartCount}}>
       <ToastContainer />
       <Header />
-      <main className='mt-44 md:mt-16'>
+      <main className='mt-44 md:mt-16 overflow-hidden '>
         <Outlet />
       </main>
       <Footer />

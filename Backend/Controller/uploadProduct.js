@@ -11,20 +11,49 @@ const uploadProduct = async (req, res) => {
         }
 
         // Extract product data from the request body
-        // console.log("body data", req.body);
+        const { 
+            productNAME, 
+            brandNAME, 
+            category, 
+            productIMAGES, 
+            description, 
+            price, 
+            sellingPRICE,
+            stock,
+            color,
+            weight,
+            features,
+            warranty,
+            waterResistance,
+            materialUsed,
+            performance,
+            aiPower,
+            environmentallyFriendly,
+            isiCertified,
+            countryOfOrigin
+        } = req.body;
 
-        const { productNAME, brandNAME, category, productIMAGES, description, price, sellingPRICE } = req.body;
-
-        // console.log("productname",productNAME);
         // Create a new product instance
         const newProduct = new Product({
-            productNAME,        // Adjusted to match frontend data
-            brandNAME,          // Adjusted to match frontend data
-            category,
+            productNAME,                     // Product name
+            brandNAME,                       // Brand name
+            category,                        // Category
             productIMAGES: productIMAGES || [], // Ensure it's an array
-            description,
-            price,
-            sellingPRICE        // Adjusted to match frontend data
+            description,                     // Product description
+            price,                           // Price
+            sellingPRICE,                    // Selling price
+            stock: stock || 0,               // Stock quantity (default to 0 if not provided)
+            color,                           // Available color options
+            weight,                          // Weight of the product
+            features: features || [],        // Key features (default to empty array if not provided)
+            warranty,                        // Warranty period
+            waterResistance,                 // Water resistance rating
+            materialUsed,                    // Material used in the product
+            performance,                     // Performance details
+            aiPower: aiPower || false,      // AI capabilities (default to false)
+            environmentallyFriendly: environmentallyFriendly || false, // Environmental friendliness
+            isiCertified: isiCertified || false, // ISI certification
+            countryOfOrigin                  // Country of origin
         });
 
         // Save the product to the database

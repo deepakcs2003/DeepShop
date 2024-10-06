@@ -7,6 +7,7 @@ import { ThreeDot } from 'react-loading-indicators';
 import { Link } from 'react-router-dom';
 import { AddToCart } from '../helper/AddToCart';
 import Context from '../context';
+import { SkeletonCard } from '../helper/Skeleton';
 
 export const FeatureProduct = ({ category }) => {
   console.log("category",category)
@@ -82,11 +83,13 @@ export const FeatureProduct = ({ category }) => {
     await fetchAddToCartCount()
   };
   return (
-    <div className="relative w-full px-4 py-10 bg-gray-100">
+    <div className="relative w-full  px-4 py-10 bg-gray-100">
       {loading ? (
-        <p className="text-center">
-          <ThreeDot variant="bounce" color="#32cd32" size="medium" />
-        </p>
+          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {Array.from({ length: 8 }).map((_, index) => (
+              <SkeletonCard key={index} />
+          ))}
+      </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {data.slice(0, visibleCount).map((product) => (
@@ -126,7 +129,7 @@ export const FeatureProduct = ({ category }) => {
                     </p>
                     <div className="flex justify-between flex-col gap-2">
                       <div className='flex flex-row justify-start text-center'>
-                        <div className="flex items-center gap-2 flex-row justify-between bg-white p-4 rounded-lg shadow-md border border-gray-200 w-full">
+                        <div className="flex items-center gap-2 flex-row justify-between bg-white p-2 rounded-lg shadow-md border border-gray-200 w-full">
                           <div className="flex flex-row gap-2 justify-center text-center">
                             <span className="text-xl font-bold text-black">
                               ₹{product.sellingPRICE}
@@ -136,7 +139,7 @@ export const FeatureProduct = ({ category }) => {
                             </span>
                           </div>
                           <div className="flex items-center ml-1">
-                            <span className="bg-red-600 text-white font-normal rounded-full px-3 py-1 text-sm">
+                            <span className="bg-red-600 text-white font-thin rounded-full px-1 py-1 text-sm">
                               {Math.round(((product.price - product.sellingPRICE) / product.price) * 100)}% OFF
                             </span>
                           </div>
